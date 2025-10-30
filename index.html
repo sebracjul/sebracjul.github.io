@@ -1,261 +1,348 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calendrier de l'Avent</title>
-<style>
-  /* Couleurs de Noël */
-  :root {
-    --rouge: #c0392b;
-    --vert: #27ae60;
-    --beige: #fef5e7;
-    --or: #f39c12;
-    --gris-clair: #ecf0f1;
-    --ombre: rgba(0,0,0,0.15);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendrier de l'Avent</title>
+  <style>
+    /* Couleurs de Noël */
+    :root {
+      --rouge: #c0392b;
+      --vert: #27ae60;
+      --beige: #fef5e7;
+      --or: #f39c12;
+      --black: #000000;
+      --gris-clair: #ecf0f1;
+      --ombre: rgba(0, 0, 0, 0.15);
+    }
 
-  body {
-    background: var(--beige);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 0;
-    color: var(--rouge);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+    body {
+      background: var(--beige);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: var(--rouge);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  header {
-    background: var(--rouge);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: bold;
-    box-shadow: 0 2px 5px var(--ombre);
-  }
+    header {
+      background: var(--rouge);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      box-shadow: 0 2px 5px var(--ombre);
+    }
 
-  main {
-    flex-grow: 1;
-    padding: 1rem;
-    max-width: 900px;
-    margin: auto;
-  }
+    main {
+      flex-grow: 1;
+      padding: 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
-    gap: 1rem;
-  }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
 
-  .case {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px var(--ombre);
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5rem;
-    position: relative;
-    min-height: 20px;
-  }
+    .case {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px var(--ombre);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem;
+      position: relative;
+      min-height: 20px;
+    }
 
-  .case.locked {
-    filter: grayscale(70%);
-    cursor: not-allowed;
-  }
+    .case.locked {
+      filter: grayscale(70%);
+      cursor: not-allowed;
+    }
 
-  .case.locked:hover {
-    transform: none;
-  }
+    .case.locked:hover {
+      transform: none;
+    }
 
-  .case.unlocked:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px var(--ombre);
-  }
+    .case.unlocked:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px var(--ombre);
+    }
 
-  .case img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 0.5rem;
-  }
-
-  .case .day {
-    position: absolute;
-    top: 6px;
-    left: 8px;
-    background: var(--rouge);
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    user-select: none;
-  }
-
-  .case .word {
-    font-weight: 600;
-    color: var(--vert);
-    font-size: 1.1rem;
-    text-align: center;
-  }
-
-  footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.9rem;
-    color: var(--rouge);
-  }
-
-  @media (max-width: 480px) {
     .case img {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
     }
-  }
 
-  /* Style spécifique pour le jour 24 */
-  #finalInputContainer {
-    text-align: center;
-    margin-top: 2rem;
-  }
+    .case .day {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      background: var(--rouge);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      user-select: none;
+    }
 
-  #finalInputContainer input {
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
-    border: 2px solid var(--rouge);
-    font-size: 1rem;
-    outline: none;
-    width: 80%;
-    max-width: 280px;
-    text-align: center;
-    color: var(--rouge);
-    background: white;
-    box-shadow: 0 2px 6px var(--ombre);
-    transition: 0.2s ease;
-  }
+    .case .word {
+      font-weight: 600;
+      color: var(--vert);
+      font-size: 1.1rem;
+      text-align: center;
+    }
 
-  #finalInputContainer input:focus {
-    border-color: var(--or);
-    box-shadow: 0 3px 8px var(--ombre);
-  }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--rouge);
+    }
 
-  #codeDisplay {
-    margin-top: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--or);
-    letter-spacing: 2px;
-    min-height: 1.5em;
-  }
-</style>
+    @media (max-width: 480px) {
+      .case img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* Style spécifique pour le jour 24 */
+    #finalInputContainer {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    #finalInputContainer input {
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--rouge);
+      font-size: 1rem;
+      outline: none;
+      width: 80%;
+      max-width: 280px;
+      text-align: center;
+      color: var(--rouge);
+      background: white;
+      box-shadow: 0 2px 6px var(--ombre);
+      transition: 0.2s ease;
+    }
+
+    #finalInputContainer input:focus {
+      border-color: var(--or);
+      box-shadow: 0 3px 8px var(--ombre);
+    }
+
+    #codeDisplay {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--or);
+      letter-spacing: 2px;
+      min-height: 1.5em;
+    }
+
+    /* === Fenêtre de prévisualisation === */
+    #lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+    }
+
+    #lightboxContent {
+      position: relative;
+      cursor: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      background: white;
+      padding: 10px;
+    }
+
+    #closeBtn {
+      position: absolute;
+      top: 0;
+      right: 12px;
+      background: transparent;
+      color: var(--black);
+      font-weight: bold;
+      border: none;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    #closeBtn:hover {
+      background: var(--rouge);
+      color: white;
+    }
+  </style>
 </head>
+
 <body>
-<header>Calendrier de l'Avent 🎄</header>
-<main>
-  <div class="grid" id="calendar"></div>
+  <header>Calendrier de l'Avent 🎄</header>
+  <main>
+    <div class="grid" id="calendar"></div>
 
-  <div id="finalInputContainer" style="display:none;">
-    <p>Entre le mot secret pour ouvrir le coffre final 🔐</p>
-    <input type="text" id="secretInput" placeholder="Mot secret..." autocomplete="off" />
-    <div id="codeDisplay"></div>
+    <div id="finalInputContainer" style="display:none;">
+      <p>Entre le mot secret pour ouvrir le coffre final 🔐</p>
+      <input type="text" id="secretInput" placeholder="Mot secret..." autocomplete="off" />
+      <div id="codeDisplay"></div>
+    </div>
+  </main>
+  <footer>Chaque jour un cadeau et un indice 🎁</footer>
+
+  <div id="lightbox">
+    <div id="lightboxContent">
+      <button id="closeBtn">✕</button>
+      <img src="" alt="Agrandissement" id="lightboxImage" />
+    </div>
   </div>
-</main>
-<footer>Chaque jour un cadeau et un indice 🎁</footer>
 
-<script>
+  <script>
 
-  const gifts = [
-    {id: 1, img: "https://img.pikbest.com/png-images/qiantu/cartoon-brown-treasure-chest-illustration_2608599.png!sw800", word:"Amour"},
-    {id: 2, img: "https://i.pinimg.com/736x/0e/00/ae/0e00ae2c78e80f3a588cd27b027ee544.jpg", word:"Magie"},
-    {id: 3, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyVJmCxRGfXkPc3mYXFwSDbztHmA2Ap-LbsA&s", word:"Sourire"},
-    {id: 4, img: "https://www.hoptoys.fr/35129-large_default/feutres-anti-pointes-enfoncees-par-8-.jpg", word:"Joie"},
-    {id: 5, img: "https://m.media-amazon.com/images/I/61LHCNsiaYL._UF1000,1000_QL80_.jpg", word:"Cadeau"},
-    {id: 6, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word:"Rêve"},
-    {id: 7, img: "https://shopkawaiigifts.com/cdn/shop/files/jbk-figure-mofusand-cat-2-mini-figure-s1-43299629138134.webp?v=1726345583", word:"Chaleur"},
-    {id: 8, img: "https://static.fnac-static.com/multimedia/Images/AE/AE/9E/F2/15900334-3-1520-3/tsp20210107041414/Peluche-Marmotte-mignonne-25-CM-Gris.jpg", word:"Lumière"},
-    {id: 9, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSS7KQ79-WBOInX7yKy3tKtUpmlW9Lct5xA&s", word:"Paix"},
-    {id: 10, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word:"Étoile"},
-    {id: 11, img: "https://preview.redd.it/ovfk3xy2o4q51.jpg?width=1080&crop=smart&auto=webp&s=81177cbde88d95f927b0cd66673918fabd4e4423", word:"Bonheur"},
-    {id: 12, img: "https://www.frenchblossom.fr/cdn/shop/products/Jellycat-croissant_1080x.jpg?v=1646470813", word:"Fête"},
-    {id: 13, img: "https://meccha-japan.com/616417-large_default/carte-mew-ex-sar-pokemon-sv2a-205165.jpg", word:"Émerveillement"},
-    {id: 14, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word:"Espoir"},
-    {id: 15, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word:"Douceur"},
-    {id: 16, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word:"Partage"},
-    {id: 17, img: "https://m.media-amazon.com/images/I/61PomhpFKiL._SL1000_.jpg", word:"Rires"},
-    {id: 18, img: "https://img.freepik.com/vecteurs-libre/cadre-modele-carre-pommes_1042-52.jpg?semt=ais_hybrid&w=740&q=80", word:"Bonhomme"},
-    {id: 19, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word:"Chocolat"},
-    {id: 20, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSovdb9ycNZKNlGButgLwGrAvbo9R_6VI6y_A&s", word:"Neige"},
-    {id: 21, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz12BMplE2ujlzsZFvIHQz2icpKehT2_khlA&s", word:"Flocon"},
-    {id: 22, img: "https://meccha-japan.com/616417-large_default/carte-mew-ex-sar-pokemon-sv2a-205165.jpg", word:"Cheminée"},
-    {id: 23, img: "https://ih1.redbubble.net/image.5520892840.5127/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg", word:"Sapins"},
-    {id: 24, img: "https://img.pikbest.com/png-images/qiantu/cartoon-brown-treasure-chest-illustration_2608599.png!sw800", word:"Coffre"}
-  ];
+    const gifts = [
+      { id: 1, img: "https://img.pikbest.com/png-images/qiantu/cartoon-brown-treasure-chest-illustration_2608599.png!sw800", word: "Amour" },
+      { id: 2, img: "https://i.pinimg.com/736x/0e/00/ae/0e00ae2c78e80f3a588cd27b027ee544.jpg", word: "Magie" },
+      { id: 3, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyVJmCxRGfXkPc3mYXFwSDbztHmA2Ap-LbsA&s", word: "Sourire" },
+      { id: 4, img: "https://www.hoptoys.fr/35129-large_default/feutres-anti-pointes-enfoncees-par-8-.jpg", word: "Joie" },
+      { id: 5, img: "https://m.media-amazon.com/images/I/61LHCNsiaYL._UF1000,1000_QL80_.jpg", word: "Cadeau" },
+      { id: 6, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word: "Rêve" },
+      { id: 7, img: "https://shopkawaiigifts.com/cdn/shop/files/jbk-figure-mofusand-cat-2-mini-figure-s1-43299629138134.webp?v=1726345583", word: "Chaleur" },
+      { id: 8, img: "https://static.fnac-static.com/multimedia/Images/AE/AE/9E/F2/15900334-3-1520-3/tsp20210107041414/Peluche-Marmotte-mignonne-25-CM-Gris.jpg", word: "Lumière" },
+      { id: 9, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSS7KQ79-WBOInX7yKy3tKtUpmlW9Lct5xA&s", word: "Paix" },
+      { id: 10, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word: "Étoile" },
+      { id: 11, img: "https://preview.redd.it/ovfk3xy2o4q51.jpg?width=1080&crop=smart&auto=webp&s=81177cbde88d95f927b0cd66673918fabd4e4423", word: "Bonheur" },
+      { id: 12, img: "https://www.frenchblossom.fr/cdn/shop/products/Jellycat-croissant_1080x.jpg?v=1646470813", word: "Fête" },
+      { id: 13, img: "https://meccha-japan.com/616417-large_default/carte-mew-ex-sar-pokemon-sv2a-205165.jpg", word: "Émerveillement" },
+      { id: 14, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word: "Espoir" },
+      { id: 15, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word: "Douceur" },
+      { id: 16, img: "https://m.media-amazon.com/images/I/61L0wjOEspS.jpg", word: "Partage" },
+      { id: 17, img: "https://m.media-amazon.com/images/I/61PomhpFKiL._SL1000_.jpg", word: "Rires" },
+      { id: 18, img: "https://img.freepik.com/vecteurs-libre/cadre-modele-carre-pommes_1042-52.jpg?semt=ais_hybrid&w=740&q=80", word: "Bonhomme" },
+      { id: 19, img: "https://www.acheter-au-pays-basque.com/img/cms/bouton-produits-beaute.png", word: "Chocolat" },
+      { id: 20, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSovdb9ycNZKNlGButgLwGrAvbo9R_6VI6y_A&s", word: "Neige" },
+      { id: 21, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz12BMplE2ujlzsZFvIHQz2icpKehT2_khlA&s", word: "Flocon" },
+      { id: 22, img: "https://meccha-japan.com/616417-large_default/carte-mew-ex-sar-pokemon-sv2a-205165.jpg", word: "Cheminée" },
+      { id: 23, img: "https://ih1.redbubble.net/image.5520892840.5127/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg", word: "Sapins" },
+      { id: 24, img: "https://img.pikbest.com/png-images/qiantu/cartoon-brown-treasure-chest-illustration_2608599.png!sw800", word: "Coffre" }
+    ];
 
-  const calendar = document.getElementById('calendar');
-  const today = new Date();
+    const calendar = document.getElementById('calendar');
+    const today = new Date();
 
-  // today.getDate() >= 24 && today.getMonth() === 11
-  var displayCase = true;
+    // today.getDate() >= 24 && today.getMonth() === 11
+    var displayCase = true;
+    // today.getDate() >= i && today.getMonth() === 11
+    var displayCaseLocked = true;
 
-  for(let i=0; i<24; i++) {
-    const day = i+1;
-    const caseDiv = document.createElement('div');
-    caseDiv.classList.add('case');
+    for (let i = 0; i < 24; i++) {
+      const day = i + 1;
+      const caseDiv = document.createElement('div');
+      caseDiv.classList.add('case');
 
-    if(displayCase) { 
-      caseDiv.classList.add('unlocked');
-    } else {
-      caseDiv.classList.add('locked');
+      if (displayCaseLocked) {
+        caseDiv.classList.add('unlocked');
+      } else {
+        caseDiv.classList.add('locked');
+      }
+
+      const dayCircle = document.createElement('div');
+      dayCircle.className = 'day';
+      dayCircle.textContent = day;
+      caseDiv.appendChild(dayCircle);
+
+      if (caseDiv.classList.contains('unlocked')) {
+        const img = document.createElement('img');
+        img.src = gifts[i].img;
+        img.alt = gifts[i].word;
+        caseDiv.appendChild(img);
+
+        const word = document.createElement('div');
+        word.className = 'word';
+        word.textContent = gifts[i].word;
+        caseDiv.appendChild(word);
+      }
+
+      calendar.appendChild(caseDiv);
     }
 
-    const dayCircle = document.createElement('div');
-    dayCircle.className = 'day';
-    dayCircle.textContent = day;
-    caseDiv.appendChild(dayCircle);
+    const finalContainer = document.getElementById("finalInputContainer");
+    const secretInput = document.getElementById("secretInput");
+    const codeDisplay = document.getElementById("codeDisplay");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const closeBtn = document.getElementById("closeBtn");
 
-    if(caseDiv.classList.contains('unlocked')) {
-      const img = document.createElement('img');
-      img.src = gifts[i].img;
-      img.alt = gifts[i].word;
-      caseDiv.appendChild(img);
-
-      const word = document.createElement('div');
-      word.className = 'word';
-      word.textContent = gifts[i].word;
-      caseDiv.appendChild(word);
+    if (displayCase) {
+      finalContainer.style.display = "block";
     }
 
-    calendar.appendChild(caseDiv);
-  }
+    secretInput.addEventListener("input", () => {
+      const value = secretInput.value.trim().toUpperCase();
+      if (value === "AMSTERDAM") {
+        codeDisplay.textContent = "0209";
+      } else if (value.length > 0) {
+        const randomCode = Math.floor(1000 + Math.random() * 9000);
+        codeDisplay.textContent = randomCode;
+      } else {
+        codeDisplay.textContent = "";
+      }
+    });
 
-  const finalContainer = document.getElementById("finalInputContainer");
-  const secretInput = document.getElementById("secretInput");
-  const codeDisplay = document.getElementById("codeDisplay");
 
-  if (displayCase) {
-    finalContainer.style.display = "block";
-  }
+    // Lightbox — ouverture
+    document.querySelectorAll('.case.unlocked img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightboxImage.src = img.src;
+        lightbox.style.display = 'flex';
+      });
+    });
 
-  secretInput.addEventListener("input", () => {
-    const value = secretInput.value.trim().toUpperCase();
-    if (value === "AMSTERDAM") {
-      codeDisplay.textContent = "0209";
-    } else if (value.length > 0) {
-      const randomCode = Math.floor(1000 + Math.random() * 9000);
-      codeDisplay.textContent = randomCode;
-    } else {
-      codeDisplay.textContent = "";
-    }
-  });
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target === closeBtn) {
+        lightbox.style.display = 'none';
+        lightboxImage.src = '';
+      }
+    });
 
-</script>
+  </script>
 </body>
+
 </html>
