@@ -239,46 +239,44 @@
   <script>
 
     const gifts = [
-      { id: 1, img: "1_24.png", word: "Enigme" },
-      { id: 2, img: "2.png", word: "Hiver" },
-      { id: 3, img: "3.png", word: "Fête" },
-      { id: 4, img: "4.png", word: "Détente" },
-      { id: 5, img: "5.png", word: "Créativité" },
-      { id: 6, img: "6.png", word: "Quartier" },
-      { id: 7, img: "7.png", word: "Art" },
-      { id: 8, img: "8.png", word: "Créativite" },
-      { id: 9, img: "9.png", word: "Art" },
-      { id: 10, img: "10.png", word: "Souvenir" },
-      { id: 11, img: "11.png", word: "Créativité" },
-      { id: 12, img: "12.png", word: "Jardin" },
-      { id: 13, img: "13.png", word: "Eau" },
-      { id: 14, img: "14.png", word: "Art" },
-      { id: 15, img: "15.png", word: "Fleur" },
-      { id: 16, img: "16.png", word: "Fleur" },
-      { id: 17, img: "17.png", word: "Fleur" },
-      { id: 18, img: "18.png", word: "Fleur" },
-      { id: 19, img: "19.png", word: "Créativité" },
-      { id: 20, img: "20.png", word: "Cloche" },
-      { id: 21, img: "21.png", word: "Souvenir" },
-      { id: 22, img: "22.png", word: "Douceur" },
-      { id: 23, img: "23.png", word: "Créativité" },
-      { id: 24, img: "1_24.png", word: "Enigme" }
+      { id: 1, unwrapped: "1_24.png", wrapped: "wrapped_1.png", word: "Enigme" },
+      { id: 2, unwrapped: "2.png", wrapped: "wrapped_2.png", word: "Hiver" },
+      { id: 3, unwrapped: "3.png", wrapped: "wrapped_3.png", word: "Fête" },
+      { id: 4, unwrapped: "4.png", wrapped: "wrapped_4.png", word: "Détente" },
+      { id: 5, unwrapped: "5.png", wrapped: "wrapped_5.png", word: "Créativité" },
+      { id: 6, unwrapped: "6.png", wrapped: "wrapped_6.png", word: "Quartier" },
+      { id: 7, unwrapped: "7.png", wrapped: "wrapped_7.png", word: "Art" },
+      { id: 8, unwrapped: "8.png", wrapped: "wrapped_8.png", word: "Créativite" },
+      { id: 9, unwrapped: "9.png", wrapped: "wrapped_9.png", word: "Art" },
+      { id: 10, unwrapped: "10.png", wrapped: "wrapped_10.png", word: "Souvenir" },
+      { id: 11, unwrapped: "11.png", wrapped: "wrapped_11.png", word: "Créativité" },
+      { id: 12, unwrapped: "12.png", wrapped: "wrapped_12.png", word: "Jardin" },
+      { id: 13, unwrapped: "13.png", wrapped: "wrapped_13.png", word: "Eau" },
+      { id: 14, unwrapped: "14.png", wrapped: "wrapped_14.png", word: "Art" },
+      { id: 15, unwrapped: "15.png", wrapped: "wrapped_15.png", word: "Fleur" },
+      { id: 16, unwrapped: "16.png", wrapped: "wrapped_16.png", word: "Fleur" },
+      { id: 17, unwrapped: "17.png", wrapped: "wrapped_17.png", word: "Fleur" },
+      { id: 18, unwrapped: "18.png", wrapped: "wrapped_18.png", word: "Fleur" },
+      { id: 19, unwrapped: "19.png", wrapped: "wrapped_19.png", word: "Créativité" },
+      { id: 20, unwrapped: "20.png", wrapped: "wrapped_20.png", word: "Cloche" },
+      { id: 21, unwrapped: "21.png", wrapped: "wrapped_21.png", word: "Souvenir" },
+      { id: 22, unwrapped: "22.png", wrapped: "wrapped_22.png", word: "Douceur" },
+      { id: 23, unwrapped: "23.png", wrapped: "wrapped_23.png", word: "Créativité" },
+      { id: 24, unwrapped: "1_24.png", wrapped: "wrapped_24.png", word: "Enigme" }
     ];
 
     const calendar = document.getElementById('calendar');
     const today = new Date();
-
-    // today.getDate() >= 24 && today.getMonth() === 11
-    //var displayCase = true;
-    // today.getDate() >= i && today.getMonth() === 11
-    //var displayCaseLocked = true;
+    //const today = new Date("2024-12-14");
 
     for (let i = 0; i < 24; i++) {
       const day = i + 1;
       const caseDiv = document.createElement('div');
       caseDiv.classList.add('case');
 
-      if (today.getMonth() !== 11 || (today.getMonth() === 11 &&  today.getDate() >= day)) {
+      const isUnlocked = (today.getMonth() !== 11) || (today.getMonth() === 11 && today.getDate() >= day);
+
+      if (isUnlocked) {
         caseDiv.classList.add('unlocked');
       } else {
         caseDiv.classList.add('locked');
@@ -289,10 +287,13 @@
       dayCircle.textContent = day;
       caseDiv.appendChild(dayCircle);
 
-      if (caseDiv.classList.contains('unlocked')) {
+      // ⚠️ Important : seulement si UNLOCKED → on affiche l'image + word
+      if (isUnlocked) {
         const img = document.createElement('img');
-        img.src = gifts[i].img;
-        img.alt = gifts[i].word;
+        img.src = gifts[i].wrapped; // miniature toujours emballée
+        img.alt = `Cadeau jour ${day}`;
+        img.dataset.unwrapped = gifts[i].unwrapped;
+        img.dataset.day = day;
         caseDiv.appendChild(img);
 
         const word = document.createElement('div');
@@ -304,16 +305,19 @@
       calendar.appendChild(caseDiv);
     }
 
+    // ========================
+    // FINAL INPUT VISIBILITY
+    // ========================
     const finalContainer = document.getElementById("finalInputContainer");
-    const secretInput = document.getElementById("secretInput");
-    const codeDisplay = document.getElementById("codeDisplay");
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImage = document.getElementById("lightboxImage");
-    const closeBtn = document.getElementById("closeBtn");
-
     if (today.getMonth() !== 11 || (today.getMonth() === 11 && today.getDate() >= 24)) {
       finalContainer.style.display = "block";
     }
+
+    // ========================
+    // SECRET INPUT
+    // ========================
+    const secretInput = document.getElementById("secretInput");
+    const codeDisplay = document.getElementById("codeDisplay");
 
     secretInput.addEventListener("input", () => {
       const value = secretInput.value.trim().toUpperCase();
@@ -327,16 +331,34 @@
       }
     });
 
+    // ========================
+    // LIGHTBOX
+    // ========================
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const closeBtn = document.getElementById("closeBtn");
 
-    // Lightbox — ouverture
-    document.querySelectorAll('.case.unlocked img').forEach(img => {
-      img.addEventListener('click', (e) => {
+    // Délégation d'événement
+    calendar.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && target.tagName === 'IMG') {
         e.stopPropagation();
-        lightboxImage.src = img.src;
+
+        const giftDay = parseInt(target.dataset.day, 10);
+        const todayDay = today.getDate();
+
+        // si jour futur → pas de clic
+        if (giftDay > todayDay) return;
+
+        // J+1 → déballé
+        const showUnwrapped = todayDay > giftDay;
+
+        lightboxImage.src = showUnwrapped ? target.dataset.unwrapped : target.src;
         lightbox.style.display = 'flex';
-      });
+      }
     });
 
+    // Fermer lightbox
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox || e.target === closeBtn) {
         lightbox.style.display = 'none';
